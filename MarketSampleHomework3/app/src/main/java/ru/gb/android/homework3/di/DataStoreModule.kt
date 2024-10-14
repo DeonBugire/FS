@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
 import ru.gb.android.homework3.data.product.ProductApiService
+import ru.gb.android.homework3.data.promo.PromoApiService
 import javax.inject.Singleton
 
 @Module
@@ -26,5 +27,11 @@ object DataStoreModule {
         retrofit: Retrofit,
     ): ProductApiService {
         return retrofit.create(ProductApiService::class.java)
+    }
+    @Provides
+    fun providePromoApiService(
+        retrofit: Retrofit
+    ): PromoApiService {
+        return retrofit.create(PromoApiService::class.java)
     }
 }

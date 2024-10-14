@@ -1,5 +1,6 @@
 package ru.gb.android.homework3.presentation.product
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
+import ru.gb.android.homework3.MarketSampleApp
+import ru.gb.android.homework3.di.DaggerAppComponent
 import ru.gb.android.homework3.marketsample.databinding.FragmentProductListBinding
 import ru.gb.android.homework3.presentation.product.adapter.ProductsAdapter
 import javax.inject.Inject
@@ -22,19 +25,24 @@ class ProductListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val adapter = ProductsAdapter()
-
     @Inject
-    lateinit var consumeProductsUseCase: ConsumeProductsUseCase
+    lateinit var productListViewModelFactory : ProductListViewModelFactory
 
     private val viewModel: ProductListViewModel by viewModels {
-        FeatureServiceLocator.provideViewModelFactory()
+        productListViewModelFactory
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        MarketSampleApp.getInstance().appComponent
+            .productComponentFactory()
+            .create()
+            .inject(this)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Внедрение зависимости через Dagger 2
         (requireActivity().application as MarketSampleApp).appComponent
-            .productComponent()
+            .productComponentFactory()
             .create()
             .inject(this)
     }

@@ -1,8 +1,9 @@
 package ru.gb.android.homework3.domain.promo
 
 import ru.gb.android.homework3.data.promo.PromoEntity
+import javax.inject.Inject
 
-class PromoDomainMapper {
+class PromoDomainMapper @Inject constructor(){
     fun fromEntity(promoEntity: PromoEntity): Promo {
         return if (promoEntity.type == "product") {
             Promo.PromoForProducts(

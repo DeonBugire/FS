@@ -2,8 +2,9 @@ package ru.gb.android.homework3.domain.product
 
 import ru.gb.android.homework3.data.product.ProductDto
 import ru.gb.android.homework3.data.product.ProductEntity
+import javax.inject.Inject
 
-class ProductDomainMapper {
+class ProductDomainMapper @Inject constructor() {
     fun fromDto(productDto: ProductDto): Product {
         return Product(
             id = productDto.id,

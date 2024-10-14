@@ -13,7 +13,9 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import ru.gb.android.homework3.domain.promo.ConsumePromosUseCase
 import ru.gb.android.homework3.marketsample.R
+import ru.gb.android.homework3.presentation.promo.di.PromoScope
 
+@PromoScope
 class PromoListViewModel(
     private val promoStateFactory: PromoStateFactory,
     private val consumePromosUseCase: ConsumePromosUseCase,

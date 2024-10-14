@@ -1,5 +1,6 @@
 package ru.gb.android.homework3.presentation.promo
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
+import ru.gb.android.homework3.MarketSampleApp
 import ru.gb.android.homework3.marketsample.databinding.FragmentPromoListBinding
+import ru.gb.android.homework3.presentation.product.ProductListViewModel
+import ru.gb.android.homework3.presentation.product.ProductListViewModelFactory
 import ru.gb.android.homework3.presentation.promo.adapter.PromoAdapter
+import ru.gb.android.homework3.presentation.promo.di.DaggerPromoComponent
 import javax.inject.Inject
 
 class PromoListFragment : Fragment() {
@@ -22,16 +27,15 @@ class PromoListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val adapter = PromoAdapter()
-
     @Inject
-    lateinit var consumePromosUseCase: ConsumePromosUseCase
+    lateinit var promoListViewModelFactory : PromoListViewModelFactory
 
     private val viewModel: PromoListViewModel by viewModels {
-        FeatureServiceLocator.provideViewModelFactory()
+        promoListViewModelFactory
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
         DaggerPromoComponent.factory()
             .create((requireActivity().application as MarketSampleApp).appComponent)
             .inject(this)

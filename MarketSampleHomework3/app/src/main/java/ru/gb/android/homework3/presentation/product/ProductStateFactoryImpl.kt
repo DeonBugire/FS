@@ -4,12 +4,17 @@ import ru.gb.android.homework3.domain.product.Product
 import ru.gb.android.homework3.domain.promo.Promo
 import ru.gb.android.homework3.presentation.common.DiscountFormatter
 import ru.gb.android.homework3.presentation.common.PriceFormatter
+import javax.inject.Inject
 
-class ProductStateFactory(
+interface ProductStateFactory {
+    fun create(product: Product, promos: List<Promo>): ProductState
+}
+
+class ProductStateFactoryImpl @Inject constructor(
     private val discountFormatter: DiscountFormatter,
     private val priceFormatter: PriceFormatter,
-) {
-    fun create(product: Product, promos: List<Promo>): ProductState {
+) : ProductStateFactory{
+    override fun create(product: Product, promos: List<Promo>): ProductState {
         val promoForProduct: Promo? = promos.firstOrNull { promo ->
             (promo is Promo.PromoForProducts &&
                     promo.products.any { productId -> productId == product.id })

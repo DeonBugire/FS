@@ -5,10 +5,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import ru.gb.android.homework3.domain.product.ConsumeProductsUseCase
 import ru.gb.android.homework3.domain.promo.ConsumePromosUseCase
+import ru.gb.android.homework3.presentation.product.di.ProductScope
+import javax.inject.Inject
 
-class ProductListViewModelFactory(
+@ProductScope
+class ProductListViewModelFactory @Inject constructor(
     private val consumeProductsUseCase: ConsumeProductsUseCase,
-    private val productStateFactory: ProductStateFactory,
+    private val productStateFactory: ProductStateFactoryImpl,
     private val consumePromosUseCase: ConsumePromosUseCase,
 ) :
     ViewModelProvider.Factory {

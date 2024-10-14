@@ -17,7 +17,7 @@ import ru.gb.android.homework3.marketsample.R
 
 class ProductListViewModel(
     private val consumeProductsUseCase: ConsumeProductsUseCase,
-    private val productStateFactory: ProductStateFactory,
+    private val productStateFactory: ProductStateFactoryImpl,
     private val consumePromosUseCase: ConsumePromosUseCase,
 ) : ViewModel() {
 
