@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import ru.gb.android.homework3.marketsample.databinding.FragmentProductListBinding
 import ru.gb.android.homework3.presentation.product.adapter.ProductsAdapter
+import javax.inject.Inject
 
 class ProductListFragment : Fragment() {
 
@@ -22,10 +23,21 @@ class ProductListFragment : Fragment() {
 
     private val adapter = ProductsAdapter()
 
+    @Inject
+    lateinit var consumeProductsUseCase: ConsumeProductsUseCase
+
     private val viewModel: ProductListViewModel by viewModels {
         FeatureServiceLocator.provideViewModelFactory()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Внедрение зависимости через Dagger 2
+        (requireActivity().application as MarketSampleApp).appComponent
+            .productComponent()
+            .create()
+            .inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,13 +71,11 @@ class ProductListFragment : Fragment() {
                             state.hasError -> {
                                 Toast.makeText(
                                     requireContext(),
-                                    "Error wile loading data",
+                                    "Error while loading data",
                                     Toast.LENGTH_SHORT
                                 ).show()
-
                                 viewModel.errorHasShown()
                             }
-
                             else -> showProductList(productListState = state.productListState)
                         }
                     }
@@ -90,3 +100,4 @@ class ProductListFragment : Fragment() {
         _binding = null
     }
 }
+

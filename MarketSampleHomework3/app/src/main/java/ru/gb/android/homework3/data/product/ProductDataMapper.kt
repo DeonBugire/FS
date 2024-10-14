@@ -1,6 +1,8 @@
 package ru.gb.android.homework3.data.product
 
-class ProductDataMapper {
+import javax.inject.Inject
+
+class ProductDataMapper @Inject constructor() {
     fun toEntity(productDto: ProductDto): ProductEntity {
         return ProductEntity(
             id = productDto.id,

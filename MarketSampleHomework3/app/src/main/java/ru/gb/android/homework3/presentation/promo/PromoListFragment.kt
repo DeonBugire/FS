@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import ru.gb.android.homework3.marketsample.databinding.FragmentPromoListBinding
 import ru.gb.android.homework3.presentation.promo.adapter.PromoAdapter
+import javax.inject.Inject
 
 class PromoListFragment : Fragment() {
 
@@ -22,8 +23,18 @@ class PromoListFragment : Fragment() {
 
     private val adapter = PromoAdapter()
 
+    @Inject
+    lateinit var consumePromosUseCase: ConsumePromosUseCase
+
     private val viewModel: PromoListViewModel by viewModels {
         FeatureServiceLocator.provideViewModelFactory()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        DaggerPromoComponent.factory()
+            .create((requireActivity().application as MarketSampleApp).appComponent)
+            .inject(this)
     }
 
     override fun onCreateView(
@@ -58,13 +69,11 @@ class PromoListFragment : Fragment() {
                             state.hasError -> {
                                 Toast.makeText(
                                     requireContext(),
-                                    "Error wile loading data",
+                                    "Error while loading data",
                                     Toast.LENGTH_SHORT
                                 ).show()
-
                                 viewModel.errorHasShown()
                             }
-
                             else -> showPromoList(promoListState = state.promoListState)
                         }
                     }

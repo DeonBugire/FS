@@ -6,8 +6,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PromoRepository(
+class PromoRepository @Inject constructor(
     private val promoLocalDataSource: PromoLocalDataSource,
     private val promoRemoteDataSource: PromoRemoteDataSource,
     private val promoDataMapper: PromoDataMapper,

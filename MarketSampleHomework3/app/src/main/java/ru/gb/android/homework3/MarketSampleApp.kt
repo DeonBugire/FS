@@ -1,15 +1,18 @@
 package ru.gb.android.homework3
 
 import android.app.Application
+import ru.gb.android.homework3.di.AppComponent
 
-class MarketSampleApp: Application() {
+class MarketSampleApp : Application() {
 
-    init {
-        instance = this
-    }
+    lateinit var appComponent: AppComponent
 
-    companion object {
-        private var instance: MarketSampleApp? = null
-        fun getInstance(): MarketSampleApp = instance!!
+    override fun onCreate() {
+        super.onCreate()
+        appComponent = DaggerAppComponent.builder()
+            .networkModule(NetworkModule())
+            .dataStoreModule(DataStoreModule())
+            .dispatchersModule(DispatchersModule())
+            .build()
     }
 }

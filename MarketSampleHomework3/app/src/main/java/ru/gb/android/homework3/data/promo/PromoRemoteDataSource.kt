@@ -1,6 +1,8 @@
 package ru.gb.android.homework3.data.promo
 
-class PromoRemoteDataSource(
+import javax.inject.Inject
+
+class PromoRemoteDataSource @Inject constructor(
     private val promoApiService: PromoApiService,
 ) {
     suspend fun getPromos(): List<PromoDto> {

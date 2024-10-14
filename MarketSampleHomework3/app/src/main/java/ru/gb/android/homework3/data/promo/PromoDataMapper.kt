@@ -1,6 +1,8 @@
 package ru.gb.android.homework3.data.promo
 
-class PromoDataMapper {
+import javax.inject.Inject
+
+class PromoDataMapper  @Inject constructor() {
     fun toEntity(promoDto: PromoDto): PromoEntity {
         return PromoEntity(
             id = promoDto.id,

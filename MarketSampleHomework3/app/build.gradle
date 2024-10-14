@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace 'ru.gb.android.homework3.marketsample'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "ru.gb.android.homework3.marketsample"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
