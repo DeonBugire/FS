@@ -1,6 +1,5 @@
 package ru.gb.android.marketsample
 
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -11,6 +10,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -54,13 +54,16 @@ class TestFavoriteDataSource : FavoritesDataSource {
     override fun consumeFavorites(): Flow<List<FavoriteEntity>> = state.asStateFlow()
 
     override suspend fun saveFavorite(favoriteEntity: FavoriteEntity) {
+        println("Before saveFavorite: ${state.value.map { it.id }}")
         state.value += favoriteEntity
+        println("After saveFavorite: ${state.value.map { it.id }}")
     }
 
     override suspend fun removeFavorite(favoriteEntity: FavoriteEntity) {
         state.value = state.value.filter { it.id != favoriteEntity.id }
     }
 }
+
 
 @RunWith(MockitoJUnitRunner::class)
 class FavoritesIntegrationTest {
@@ -143,36 +146,42 @@ class FavoritesIntegrationTest {
     fun `addFavoriteProduct EXPECT isFavoriteFlagUpdated`() = runTest(UnconfinedTestDispatcher()) {
         // arrange
         val productEntity = createProductEntity(id = "1", price = 100.0)
-        val productState = create(id = "1", price = "100,00")
         productsFromServer(ProductDataMapper().fromEntity(productEntity))
 
         val expectedInitialState = ProductsScreenState()
         val expectedLoadingState = ProductsScreenState(isLoading = true)
         val expectedDataState = ProductsScreenState(
             isLoading = false,
-            productListState = listOf(productState)
+            productListState = listOf(
+                create(id = "1", price = "100,00", isFavorite = true)
+            )
         )
         val (job, results) = collectResults()
 
         // act
-        ioDispatcher.scheduler.runCurrent()
-        mainDispatcherRule.testDispatcher.scheduler.runCurrent()
+        println("Test: Adding product to favorites")
         sut.addToFavorites(productEntity.id)
         ioDispatcher.scheduler.runCurrent()
+        advanceUntilIdle()
+        println("Test: Running observeFavorites")
+        sut.observeFavorites()
+        ioDispatcher.scheduler.runCurrent()
         mainDispatcherRule.testDispatcher.scheduler.runCurrent()
+        advanceUntilIdle()
 
         // assert
-        assertEquals(3, results.size)
+        assertEquals(4, results.size)
         assertEquals(expectedInitialState, results[0])
         assertEquals(expectedLoadingState, results[1])
         assertEquals(expectedDataState, results[2])
-        val updatedProductState = results[2].productListState.first()
-        val expectedUpdatedState = productState.copy(isFavorite = true)
+        val updatedProductState = results[3].productListState.last()
+        val expectedUpdatedState = create(id = "1", price = "100,00", isFavorite = true)
 
         assertEquals(expectedUpdatedState.isFavorite, updatedProductState.isFavorite)
 
         job.cancel()
     }
+
 
     private suspend fun productsFromServer(vararg products: ProductDto) {
         whenever(productRemoteDataSource.getProducts()).thenReturn(products.toList())

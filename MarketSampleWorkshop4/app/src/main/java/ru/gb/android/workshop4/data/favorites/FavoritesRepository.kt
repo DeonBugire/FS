@@ -18,6 +18,7 @@ class FavoritesRepository @Inject constructor(
     }
 
     suspend fun addToFavorites(favorite: FavoriteEntity) = withContext(dispatcher) {
+        println("Repository: Adding to favorites in repository, id: ${favorite.id}")
         favoritesDataSource.saveFavorite(favorite)
     }
 

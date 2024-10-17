@@ -8,6 +8,7 @@ class AddFavoriteUseCase @Inject constructor(
     private val favoritesRepository: FavoritesRepository
 ) {
     suspend fun execute(favorite: FavoriteEntity) {
+        println("UseCase: Executing addFavorite with id: ${favorite.id}")
         favoritesRepository.addToFavorites(favorite)
     }
 }

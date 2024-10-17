@@ -12,6 +12,7 @@ class ProductStateFactory @Inject constructor(
 ) {
     fun create(product: Product, favoriteEntities: List<FavoriteEntity>): ProductState {
         val isFavorite = favoriteEntities.any { it.id == product.id }
+        println("ProductStateFactory: Creating product state for ${product.id}, isFavorite: $isFavorite")
         return ProductState(
             id = product.id,
             name = product.name,

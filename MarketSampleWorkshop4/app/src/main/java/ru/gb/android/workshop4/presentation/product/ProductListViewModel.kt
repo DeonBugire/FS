@@ -36,7 +36,7 @@ class ProductListViewModel @Inject constructor(
         observeFavorites()
     }
 
-    fun observeProducts() {
+    private fun observeProducts() {
         consumeProductsUseCase()
             .onStart {
                 _state.update { it.copy(isLoading = true) }
@@ -51,7 +51,7 @@ class ProductListViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    private fun observeFavorites() {
+    fun observeFavorites() {
         consumeFavoritesUseCase.execute()
             .onEach { favorites ->
                 favoriteList = favorites
@@ -64,6 +64,7 @@ class ProductListViewModel @Inject constructor(
         val updatedProductListState = productList.map { product ->
             productStateFactory.create(product, favoriteList)
         }
+        println("updateProductListState: Updated product list state - ${updatedProductListState.map { it.id to it.isFavorite }}")
         _state.update { it.copy(isLoading = false, productListState = updatedProductListState) }
     }
 
@@ -78,7 +79,9 @@ class ProductListViewModel @Inject constructor(
 
     fun addToFavorites(favoriteId: String) {
         viewModelScope.launch {
+            println("ViewModel: Adding product to favorites with id: $favoriteId")
             addFavoriteUseCase.execute(FavoriteEntity(favoriteId))
+            observeFavorites()
         }
     }
 
