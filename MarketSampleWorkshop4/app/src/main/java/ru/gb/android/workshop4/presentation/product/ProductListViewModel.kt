@@ -61,11 +61,17 @@ class ProductListViewModel @Inject constructor(
     }
 
     private fun updateProductListState() {
+        println("Updating product list state with favoriteList: ${favoriteList.map { it.id }}")
         val updatedProductListState = productList.map { product ->
-            productStateFactory.create(product, favoriteList)
+            val productState = productStateFactory.create(product, favoriteList)
+            println("ProductStateFactory: Created product state for ${product.id}, isFavorite: ${productState.isFavorite}")
+            productState
         }
-        println("updateProductListState: Updated product list state - ${updatedProductListState.map { it.id to it.isFavorite }}")
-        _state.update { it.copy(isLoading = false, productListState = updatedProductListState) }
+        _state.update {
+            println("updateProductListState: Final updated product list state - ${updatedProductListState.map { it.id to it.isFavorite }}")
+            it.copy(isLoading = false, productListState = updatedProductListState)
+        }
+        println("State after update: ${_state.value.productListState.map { it.id to it.isFavorite }}")
     }
 
     fun refresh() {

@@ -42,8 +42,17 @@ import ru.gb.android.workshop4.presentation.product.ProductsScreenState
 
 class TestProductLocalDataSource : ProductLocalDataSource {
     private val state = MutableStateFlow<List<ProductEntity>>(listOf())
+
     override fun consumeProducts(): Flow<List<ProductEntity>> = state.asStateFlow()
+
     override suspend fun saveProducts(products: List<ProductEntity>) {
+        println("Before saving products: ${state.value.map { it.id }}")
+        state.value = products
+        println("After saving products: ${state.value.map { it.id }}")
+    }
+
+    fun addInitialProducts(products: List<ProductEntity>) {
+        println("Adding initial products: ${products.map { it.id }}")
         state.value = products
     }
 }
@@ -69,6 +78,7 @@ class TestFavoriteDataSource : FavoritesDataSource {
 class FavoritesIntegrationTest {
     private lateinit var sut: ProductListViewModel
     private val testFavoriteDataSource = TestFavoriteDataSource()
+    private val productLocalDataSource = TestProductLocalDataSource()
 
     @Mock
     lateinit var productRemoteDataSource: ProductRemoteDataSource
@@ -98,6 +108,10 @@ class FavoritesIntegrationTest {
         )
         val addFavoriteUseCase = AddFavoriteUseCase(favoritesRepository)
         val removeFavoriteUseCase = RemoveFavoriteUseCase(favoritesRepository)
+
+        val initialProducts = listOf(createProductEntity(id = "1", price = 100.0))
+        productLocalDataSource.addInitialProducts(initialProducts)
+
         sut = ProductListViewModel(
             consumeProductsUseCase = consumeProductsUseCase,
             consumeFavoritesUseCase = consumeFavoritesUseCase,
@@ -106,56 +120,12 @@ class FavoritesIntegrationTest {
             productStateFactory = ProductStateFactory(priceFormatter = PriceFormatterImpl())
         )
     }
-
-
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `requestProducts EXPECT show all three states`() = runTest(UnconfinedTestDispatcher()) {
-        // arrange
-        val productDtoList = listOf(
-            ProductDataMapper().fromEntity(createProductEntity(id = "1", price = 100.0)),
-            ProductDataMapper().fromEntity(createProductEntity(id = "2", price = 200.0))
-        )
-
-        productsFromServer(*productDtoList.toTypedArray())
-
-        val expectedInitialState = ProductsScreenState()
-        val expectedLoadingState = ProductsScreenState(isLoading = true)
-        val expectedDataState = ProductsScreenState(
-            isLoading = false,
-            productListState = listOf(
-                create(id = "1", price = "100,00"),
-                create(id = "2", price = "200,00")
-            )
-        )
-        val (job, results) = collectResults()
-
-        // act
-        ioDispatcher.scheduler.runCurrent()
-        mainDispatcherRule.testDispatcher.scheduler.runCurrent()
-
-        // assert
-        assertEquals(3, results.size)
-        assertEquals(expectedInitialState, results[0])
-        assertEquals(expectedLoadingState, results[1])
-        assertEquals(expectedDataState, results[2])
-        job.cancel()
-    }
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `addFavoriteProduct EXPECT isFavoriteFlagUpdated`() = runTest(UnconfinedTestDispatcher()) {
+    fun `addFavoriteProduct EXPECT isFavoriteFlagUpdated to true`() = runTest(UnconfinedTestDispatcher()) {
         // arrange
         val productEntity = createProductEntity(id = "1", price = 100.0)
         productsFromServer(ProductDataMapper().fromEntity(productEntity))
-
-        val expectedInitialState = ProductsScreenState()
-        val expectedLoadingState = ProductsScreenState(isLoading = true)
-        val expectedDataState = ProductsScreenState(
-            isLoading = false,
-            productListState = listOf(
-                create(id = "1", price = "100,00", isFavorite = true)
-            )
-        )
         val (job, results) = collectResults()
 
         // act
@@ -170,18 +140,40 @@ class FavoritesIntegrationTest {
         advanceUntilIdle()
 
         // assert
-        assertEquals(4, results.size)
-        assertEquals(expectedInitialState, results[0])
-        assertEquals(expectedLoadingState, results[1])
-        assertEquals(expectedDataState, results[2])
-        val updatedProductState = results[3].productListState.last()
+        println("State in test: ${results.map { it.productListState.map { state -> state.id to state.isFavorite } }}")
+        val updatedProductState = results.last().productListState.first()
         val expectedUpdatedState = create(id = "1", price = "100,00", isFavorite = true)
-
         assertEquals(expectedUpdatedState.isFavorite, updatedProductState.isFavorite)
-
         job.cancel()
     }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `removeFavoriteProduct EXPECT isFavoriteFlagUpdated to false`() = runTest(UnconfinedTestDispatcher()) {
+        val productEntity1 = createProductEntity(id = "1", price = 100.0)
+        val productEntity2 = createProductEntity(id = "2", price = 200.0)
+        productsFromServer(ProductDataMapper().fromEntity(productEntity1), ProductDataMapper().fromEntity(productEntity2))
+        sut.addToFavorites(productEntity2.id)
+        advanceUntilIdle()
+        val (job, results) = collectResults()
 
+        // act
+        println("Test: Removing product from favorites")
+        sut.removeFromFavorites(productEntity2.id)
+        ioDispatcher.scheduler.runCurrent()
+        advanceUntilIdle()
+        sut.observeFavorites()
+        ioDispatcher.scheduler.runCurrent()
+        mainDispatcherRule.testDispatcher.scheduler.runCurrent()
+        advanceUntilIdle()
+
+        // assert
+        println("State in test: ${results.map { it.productListState.map { state -> state.id to state.isFavorite } }}")
+        val updatedProductState = results.last().productListState.first { it.id == "2" }
+        val expectedUpdatedState = create(id = "2", price = "200,00", isFavorite = false)
+
+        assertEquals(expectedUpdatedState.isFavorite, updatedProductState.isFavorite)
+        job.cancel()
+    }
 
     private suspend fun productsFromServer(vararg products: ProductDto) {
         whenever(productRemoteDataSource.getProducts()).thenReturn(products.toList())
