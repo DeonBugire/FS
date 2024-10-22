@@ -6,10 +6,10 @@ import com.example.animelist.domain.model.Movie
 object MovieMapper {
     fun mapToDomain(movieDto: MovieDto): Movie {
         return Movie(
-            title = movieDto.title,
-            year = movieDto.year,
             imdbID = movieDto.imdbID,
-            poster = movieDto.poster
+            title = movieDto.title,
+            poster = movieDto.poster,
+            year = movieDto.year
         )
     }
 

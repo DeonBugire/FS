@@ -1,6 +1,7 @@
 package com.example.animelist.presentation
 
 import androidx.lifecycle.ViewModel
+import com.example.animelist.domain.usecase.GetFavoritesUseCase
 import com.example.animelist.domain.usecase.SearchMoviesUseCase
 import com.example.animelist.presentation.mapper.MoviePresentationMapper
 import com.example.animelist.presentation.model.MoviePresentation
@@ -10,9 +11,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 import androidx.lifecycle.MutableLiveData
 import android.util.Log
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 class MovieViewModel @Inject constructor(
-    private val searchMoviesUseCase: SearchMoviesUseCase
+    private val searchMoviesUseCase: SearchMoviesUseCase,
+    private val getFavoritesUseCase: GetFavoritesUseCase
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -26,7 +30,10 @@ class MovieViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ movieList ->
                 Log.d("MovieViewModel", "Movies received: ${movieList.size}")
-                val presentationList = MoviePresentationMapper.mapToPresentationList(movieList)
+                val favoriteEntities = runBlocking {
+                    getFavoritesUseCase.execute().first()
+                }
+                val presentationList = MoviePresentationMapper.mapToPresentationList(movieList, favoriteEntities)
                 movieListLiveData.value = presentationList
             }, { error ->
                 Log.e("MovieViewModel", "Error fetching movies: ${error.message}")
@@ -40,4 +47,5 @@ class MovieViewModel @Inject constructor(
         super.onCleared()
     }
 }
+
 

@@ -39,6 +39,8 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
+        dataBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -85,4 +87,11 @@ dependencies {
     implementation (libs.coil.compose)
 
     implementation (libs.logging.interceptor)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore)
+
+    implementation(libs.androidx.navigation.compose)
+
+    implementation (libs.kotlinx.serialization.json)
+    implementation (libs.kotlinx.coroutines.rx3)
 }

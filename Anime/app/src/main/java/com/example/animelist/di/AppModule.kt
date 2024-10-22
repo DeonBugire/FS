@@ -1,5 +1,6 @@
 package com.example.animelist.di
 
+import android.content.Context
 import com.example.animelist.data.api.MovieApi
 import com.example.animelist.data.repository.MovieRepositoryImpl
 import com.example.animelist.domain.repository.MovieRepository
@@ -48,8 +49,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideMovieRepository(api: MovieApi): MovieRepository {
-        return MovieRepositoryImpl(api)
+    fun provideMovieRepository(api: MovieApi, context: Context): MovieRepository {
+        return MovieRepositoryImpl(api, context)
     }
 
     @Provides

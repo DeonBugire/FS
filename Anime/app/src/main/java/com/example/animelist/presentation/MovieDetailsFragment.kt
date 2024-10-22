@@ -33,7 +33,8 @@ class MovieDetailsFragment : Fragment() {
     ): android.view.View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                MovieDetailsScreen(viewModel, onBack = {
+                val imdbID = requireArguments().getString("imdbID") ?: ""
+                MovieDetailsScreen(viewModel, imdbID, onBack = {
                     requireActivity().supportFragmentManager.popBackStack()
                 })
             }
@@ -51,13 +52,16 @@ class MovieDetailsFragment : Fragment() {
         }
         Log.d("MovieDetailsFragment", "Received imdbID: $imdbID")
 
+        // Теперь передаем imdbID
         viewModel.getMovieDetails(imdbID)
+        viewModel.checkIfFavorite(imdbID)
     }
 }
 
 @Composable
-fun MovieDetailsScreen(viewModel: MovieDetailsViewModel, onBack: () -> Unit) {
+fun MovieDetailsScreen(viewModel: MovieDetailsViewModel, imdbID: String, onBack: () -> Unit) {
     val movieDetailsState = viewModel.movieDetailsLiveData.observeAsState()
+    val isFavorite = viewModel.isFavoriteLiveData.observeAsState(false).value
 
     Column(
         modifier = Modifier
@@ -88,6 +92,11 @@ fun MovieDetailsScreen(viewModel: MovieDetailsViewModel, onBack: () -> Unit) {
             InfoRow(label = "Director", value = details.director)
             InfoRow(label = "Actors", value = details.actors)
             InfoRow(label = "Plot", value = details.plot)
+
+            Spacer(modifier = Modifier.height(16.dp))
+            FavoriteIcon(isFavorite = isFavorite, onFavoriteClick = {
+                viewModel.toggleFavorite(imdbID)
+            })
 
             Spacer(modifier = Modifier.height(16.dp))
 
