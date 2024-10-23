@@ -6,5 +6,5 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 interface MovieApi {
     @GET("/")
-    fun searchMovies(@Query("s") title: String, @Query("apikey") apiKey: String = "279d0085"): Single<MovieResponse>
+    fun searchMovies(@Query("s") title: String, @Query("apikey") apiKey: String = ""): Single<MovieResponse>
 }
