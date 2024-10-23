@@ -1,7 +1,7 @@
 package com.example.video2.di
 
 import android.content.Context
-import com.example.video2.presentation.MovieListFragment
+import com.example.video2.feature.movielist.presentation.MovieListFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

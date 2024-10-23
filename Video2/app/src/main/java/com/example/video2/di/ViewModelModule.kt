@@ -1,7 +1,7 @@
 package com.example.video2.di
 
 import androidx.lifecycle.ViewModel
-import com.example.video2.presentation.MovieViewModel
+import com.example.video2.feature.movielist.presentation.MovieViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

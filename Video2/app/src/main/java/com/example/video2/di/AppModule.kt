@@ -1,9 +1,9 @@
 package com.example.video2.di
 
-import com.example.video2.data.api.MovieApi
-import com.example.video2.data.repository.MovieRepositoryImpl
-import com.example.video2.domain.repository.MovieRepository
-import com.example.video2.presentation.ViewModelFactory
+import com.example.video2.feature.movielist.data.api.MovieApi
+import com.example.video2.feature.movielist.data.repository.MovieRepositoryImpl
+import com.example.video2.feature.movielist.domain.repository.MovieRepository
+import com.example.video2.feature.movielist.presentation.ViewModelFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Provider

@@ -2,7 +2,7 @@ package com.example.video2
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.video2.presentation.MovieListFragment
+import com.example.video2.feature.movielist.presentation.MovieListFragment
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
