@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import android.util.Log
+import androidx.lifecycle.LiveData
 import javax.inject.Inject
 
 class MovieViewModel @Inject constructor(
@@ -18,6 +19,9 @@ class MovieViewModel @Inject constructor(
 
     val movieListLiveData = MutableLiveData<List<MoviePresentation>>()
     private val errorLiveData = MutableLiveData<String>()
+
+    private val _navigateToMovieDetails = MutableLiveData<String?>()
+    val navigateToMovieDetails: LiveData<String?> = _navigateToMovieDetails
 
     fun searchMovies(title: String) {
         viewModelScope.launch {
@@ -34,5 +38,11 @@ class MovieViewModel @Inject constructor(
         }
     }
 
+    fun onMovieClick(imdbID: String) {
+        _navigateToMovieDetails.postValue(imdbID)
+    }
 
+    fun onMovieDetailsNavigated() {
+        _navigateToMovieDetails.postValue(null)
+    }
 }

@@ -6,7 +6,8 @@ object MoviePresentationMapper {
     private fun mapToPresentation(movie: Movie): MoviePresentation {
         return MoviePresentation(
             title = movie.title,
-            poster = movie.poster
+            poster = movie.poster,
+            imdbID = movie.imdbID
         )
     }
     fun mapToPresentationList(movieList: List<Movie>): List<MoviePresentation> {

@@ -1,9 +1,9 @@
 package com.example.video2.feature.moviedetail.data.repository
 
-import com.example.video2.feature.moviedetail.data.api.MovieDetailsApi
 import com.example.video2.feature.moviedetail.data.mapper.MovieDetailsMapper
 import com.example.video2.feature.moviedetail.domain.model.MovieDetails
 import com.example.video2.feature.moviedetail.domain.repository.MovieDetailsRepository
+import com.example.video2.feature.moviedetail.data.api.MovieDetailsApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

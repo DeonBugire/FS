@@ -1,6 +1,7 @@
 package com.example.video2.di
 
 import androidx.lifecycle.ViewModel
+import com.example.video2.feature.moviedetail.presentation.viewmodel.MovieDetailsViewModel
 import com.example.video2.feature.movielist.presentation.MovieViewModel
 import dagger.Binds
 import dagger.Module
@@ -11,4 +12,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MovieViewModel::class)
     abstract fun bindMovieViewModel(viewModel: MovieViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieDetailsViewModel::class)
+    abstract fun bindMovieDetailsViewModel(viewModel: MovieDetailsViewModel): ViewModel
 }

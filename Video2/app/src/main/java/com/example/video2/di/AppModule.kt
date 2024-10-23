@@ -12,6 +12,7 @@ import dagger.Module
 import dagger.Provides
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.video2.feature.moviedetail.data.api.MovieDetailsApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -43,6 +44,16 @@ class AppModule {
             .build()
             .create(MovieApi::class.java)
     }
+    @Provides
+    @Singleton
+    fun provideMovieDetailsApi(okHttpClient: OkHttpClient): MovieDetailsApi {
+        return Retrofit.Builder()
+            .baseUrl("https://www.omdbapi.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(MovieDetailsApi::class.java)
+    }
 
     @Provides
     @Singleton
@@ -57,4 +68,5 @@ class AppModule {
     ): ViewModelProvider.Factory {
         return ViewModelFactory(creators)
     }
+
 }
