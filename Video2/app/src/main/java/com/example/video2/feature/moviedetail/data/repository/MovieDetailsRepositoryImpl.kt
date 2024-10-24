@@ -14,7 +14,7 @@ class MovieDetailsRepositoryImpl @Inject constructor(
     override fun getMovieDetails(imdbID: String): Flow<MovieDetails> {
         return flow {
             val response = api.getMovieDetails(imdbID)
-            emit(MovieDetailsMapper.mapToDomain(response))
+            emit(MovieDetailsMapper.mapToDomain(imdbID, response))
         }
     }
 }

@@ -6,5 +6,6 @@ data class MovieDetailsPresentation(
     val director: String,
     val actors: String,
     val plot: String,
-    val poster: String
+    val poster: String,
+    var isFavorite: Boolean = false
 )

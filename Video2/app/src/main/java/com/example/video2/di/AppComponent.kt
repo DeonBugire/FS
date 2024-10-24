@@ -8,7 +8,11 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, ViewModelModule::class,  MovieDetailsModule::class])
+@Component(modules = [
+    AppModule::class,
+    ViewModelModule::class,
+    MovieDetailsModule::class,
+    MovieFavoritesModule::class])
 interface AppComponent {
     fun inject(moviesMainFragment: MoviesMainFragment)
     fun inject(movieDetailsFragment: MovieDetailsFragment)

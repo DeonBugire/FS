@@ -4,8 +4,9 @@ import com.example.video2.feature.moviedetail.data.model.MovieDetailsDto
 import com.example.video2.feature.moviedetail.domain.model.MovieDetails
 
 object MovieDetailsMapper {
-    fun mapToDomain(movieDetailsDto: MovieDetailsDto): MovieDetails {
+    fun mapToDomain(imdbID: String, movieDetailsDto: MovieDetailsDto): MovieDetails {
         return MovieDetails(
+            imdbID = imdbID,
             title = movieDetailsDto.title,
             year = movieDetailsDto.year,
             director = movieDetailsDto.director,
