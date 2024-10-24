@@ -1,11 +1,7 @@
 package com.example.video2.feature.moviedetail.presentation.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,13 +10,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.example.video2.feature.moviedetail.presentation.model.MovieDetailsPresentation
 import com.example.video2.feature.moviedetail.presentation.viewmodel.MovieDetailsViewModel
 
 @Composable
 fun MovieDetailsScreen(
     viewModel: MovieDetailsViewModel,
     imdbID: String,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onFavoriteClick: (MovieDetailsPresentation) -> Unit
 ) {
     val movieDetails = viewModel.movieDetails.collectAsState().value
 
@@ -48,6 +46,14 @@ fun MovieDetailsScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = { onBack() }) {
                 Text(text = "Back")
+            }
+
+            Button(
+                onClick = { onFavoriteClick(details) },
+                modifier = Modifier.padding(top = 16.dp)
+            ) {
+                val buttonText = if (details.isFavorite) "Remove from Favorites" else "Add to Favorites"
+                Text(text = buttonText)
             }
         }
     }

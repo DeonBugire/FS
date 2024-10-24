@@ -1,6 +1,7 @@
 package com.example.video2.feature.moviedetail.presentation.model
 
 data class MovieDetailsPresentation(
+    val imdbID: String,
     val title: String,
     val year: String,
     val director: String,

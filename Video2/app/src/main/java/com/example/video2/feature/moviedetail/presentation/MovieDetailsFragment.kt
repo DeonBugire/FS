@@ -25,9 +25,14 @@ class MovieDetailsFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val imdbID = requireArguments().getString("imdbID") ?: ""
-                MovieDetailsScreen(viewModel = viewModel, imdbID = imdbID, onBack = {
-                    requireActivity().supportFragmentManager.popBackStack()
-                })
+                MovieDetailsScreen(
+                    viewModel = viewModel,
+                    imdbID = imdbID,
+                    onBack = { requireActivity().supportFragmentManager.popBackStack() },
+                    onFavoriteClick = { movieDetails ->
+                        viewModel.toggleFavorite(movieDetails)
+                    }
+                )
             }
         }
     }
@@ -50,5 +55,4 @@ class MovieDetailsFragment : Fragment() {
             return fragment
         }
     }
-
 }

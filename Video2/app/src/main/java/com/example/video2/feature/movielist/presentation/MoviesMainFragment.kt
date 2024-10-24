@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.video2.VideoApp
 import com.example.video2.feature.moviedetail.presentation.MovieDetailsFragment
+import com.example.video2.feature.movielist.presentation.ui.MoviesMainScreen
 import javax.inject.Inject
 
 class MoviesMainFragment : Fragment() {
@@ -24,6 +25,11 @@ class MoviesMainFragment : Fragment() {
                 MoviesMainScreen(viewModel = viewModel)
             }
         }
+    }
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshMovies()
+        viewModel.refreshFavorites()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

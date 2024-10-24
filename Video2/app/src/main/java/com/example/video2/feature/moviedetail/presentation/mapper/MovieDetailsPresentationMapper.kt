@@ -6,6 +6,7 @@ import com.example.video2.feature.moviedetail.presentation.model.MovieDetailsPre
 object MovieDetailsPresentationMapper {
     fun mapToPresentation(movieDetails: MovieDetails, isFavorite: Boolean): MovieDetailsPresentation {
         return MovieDetailsPresentation(
+            imdbID = movieDetails.imdbID,
             title = movieDetails.title,
             year = movieDetails.year,
             director = movieDetails.director,

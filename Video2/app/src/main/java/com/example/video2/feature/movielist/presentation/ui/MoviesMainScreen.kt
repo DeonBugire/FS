@@ -1,4 +1,4 @@
-package com.example.video2.feature.movielist.presentation
+package com.example.video2.feature.movielist.presentation.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,7 +11,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.video2.common.MovieTabs
-import com.example.video2.feature.movielist.presentation.model.MoviePresentation
+import com.example.video2.feature.movielist.presentation.MovieViewModel
 
 @Composable
 fun MoviesMainScreen(viewModel: MovieViewModel) {
@@ -41,19 +41,13 @@ fun MovieListScreen(viewModel: MovieViewModel, modifier: Modifier = Modifier) {
     ) {
         items(movieList.size) { index ->
             val movie = movieList[index]
-            MovieItem(movie) { imdbID ->
-                viewModel.onMovieClick(imdbID)
-            }
+            MovieItem(
+                movie = movie,
+                onMovieClick = { imdbID -> viewModel.onMovieClick(imdbID) },
+                onFavoriteClick = { movie -> viewModel.toggleFavorite(movie) }
+            )
         }
     }
-}
-
-@Composable
-fun FavoritesScreen(viewModel: MovieViewModel, modifier: Modifier = Modifier) {
-    Text(
-        text = "No favorites yet.",
-        modifier = modifier.padding(16.dp)
-    )
 }
 
 @Composable
