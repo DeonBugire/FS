@@ -1,4 +1,4 @@
-package com.example.video2.feature.moviefavorites.data
+package com.example.video2.feature.moviefavorites.data.model
 
 import kotlinx.serialization.Serializable
 
