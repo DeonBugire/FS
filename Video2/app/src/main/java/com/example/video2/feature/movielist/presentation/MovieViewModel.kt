@@ -80,12 +80,15 @@ class MovieViewModel @Inject constructor(
         }
     }
 
+
     fun refreshFavorites() {
         viewModelScope.launch {
             val favorites = consumeFavoritesUseCase.execute().first()
 
             val favoritePresentationList = movies.filter { movie ->
                 favorites.any { it.id == movie.imdbID }
+            }.map { movie ->
+                movie.copy(isFavorite = true)
             }
 
             favoriteMoviesLiveData.postValue(favoritePresentationList)
