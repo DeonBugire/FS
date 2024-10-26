@@ -11,6 +11,21 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/favorites" />
+            <option value="$PROJECT_DIR$/favorites/data" />
+            <option value="$PROJECT_DIR$/favorites/di" />
+            <option value="$PROJECT_DIR$/favorites/domain" />
+            <option value="$PROJECT_DIR$/moviedetails" />
+            <option value="$PROJECT_DIR$/moviedetails/data" />
+            <option value="$PROJECT_DIR$/moviedetails/di" />
+            <option value="$PROJECT_DIR$/moviedetails/domain" />
+            <option value="$PROJECT_DIR$/moviedetails/presentation" />
+            <option value="$PROJECT_DIR$/movielist" />
+            <option value="$PROJECT_DIR$/movielist/data" />
+            <option value="$PROJECT_DIR$/movielist/di" />
+            <option value="$PROJECT_DIR$/movielist/domain" />
+            <option value="$PROJECT_DIR$/movielist/presentation" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
