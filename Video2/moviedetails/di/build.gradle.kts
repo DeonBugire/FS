@@ -43,6 +43,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":moviedetails:presentation"))
     implementation(project(":favorites:di"))
+    implementation(project(":movielist:presentation"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

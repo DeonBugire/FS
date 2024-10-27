@@ -42,7 +42,6 @@ dependencies {
     implementation(project(":favorites:domain"))
     implementation(project(":core"))
     implementation(project(":moviedetails:presentation"))
-    implementation(project(":app"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

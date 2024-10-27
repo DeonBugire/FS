@@ -29,4 +29,3 @@ object NetworkModule {
             .build()
     }
 }
-

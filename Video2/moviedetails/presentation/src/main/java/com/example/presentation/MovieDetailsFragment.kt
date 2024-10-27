@@ -8,13 +8,13 @@ import com.example.presentation.ui.MovieDetailsScreen
 import com.example.presentation.viewmodel.MovieDetailsViewModel
 import com.example.core.di.ViewModelFactory
 import javax.inject.Inject
+import com.example.core.di.findDependencies
 
 class MovieDetailsFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: MovieDetailsViewModel by viewModels { viewModelFactory }
-
 
     override fun onCreateView(
         inflater: android.view.LayoutInflater,
@@ -38,11 +38,9 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (requireActivity().applicationContext as VideoApp).appComponent.inject(this)
-        val imdbID = requireArguments().getString("imdbID")
-        if (imdbID != null) {
-            viewModel.getMovieDetails(imdbID)
-        }
+        DaggerMovieDetailsComponent.factory()
+            .create(findDependencies())
+            .inject(this)
     }
 
     companion object {

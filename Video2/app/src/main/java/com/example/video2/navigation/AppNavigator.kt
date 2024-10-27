@@ -1,9 +1,24 @@
 package com.example.video2.navigation
 
 import androidx.fragment.app.Fragment
-import com.example.core.navigation.Navigator
+import androidx.fragment.app.FragmentActivity
+import com.example.presentation.MovieDetailsFragment
+import com.example.presentation.MoviesMainFragment
 
 class AppNavigator : Navigator {
-    override fun getMoviesMainFragment(): Fragment = MoviesMainFragment()
-    override fun getMovieDetailsFragment(imdbID: String): Fragment = MovieDetailsFragment.newInstance(imdbID)
+    override fun navigateToMovieDetails(fragment: FragmentActivity, imdbID: String) {
+        val movieDetailsFragment = MovieDetailsFragment.newInstance(imdbID)
+        fragment.supportFragmentManager.beginTransaction()
+            .replace(android.R.id.content, movieDetailsFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun navigateToMoviesMain(fragment: FragmentActivity) {
+        val moviesMainFragment = MoviesMainFragment()
+        fragment.supportFragmentManager.beginTransaction()
+            .replace(android.R.id.content, moviesMainFragment)
+            .addToBackStack(null)
+            .commit()
+    }
 }

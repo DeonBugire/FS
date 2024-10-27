@@ -52,4 +52,5 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.androidx.fragment.ktx)
     implementation (libs.logging.interceptor)
+    implementation (libs.material3)
 }
