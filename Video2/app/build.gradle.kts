@@ -2,8 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("kotlin-kapt")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -68,10 +67,10 @@ dependencies {
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
     implementation (libs.dagger)
-    kapt (libs.dagger.compiler)
+    ksp (libs.dagger.compiler)
     implementation (libs.glide)
-    kapt (libs.compiler)
-    implementation (libs.coil.compose)
+    ksp (libs.compiler)
+    implementation(libs.coil.compose)
     implementation (libs.logging.interceptor)
 
     implementation (libs.kotlinx.coroutines.core)

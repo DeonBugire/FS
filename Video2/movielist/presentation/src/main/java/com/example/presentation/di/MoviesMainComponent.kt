@@ -1,4 +1,4 @@
-package com.example.di
+package com.example.presentation.di
 
 import com.example.core.di.Dependencies
 import com.example.presentation.MoviesMainFragment

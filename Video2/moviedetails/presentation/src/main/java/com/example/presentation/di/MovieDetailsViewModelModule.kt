@@ -1,4 +1,4 @@
-package com.example.di
+package com.example.presentation.di
 
 import androidx.lifecycle.ViewModel
 import com.example.core.di.ViewModelKey

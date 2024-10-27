@@ -1,4 +1,4 @@
-package com.example.di
+package com.example.presentation.di
 
 import com.example.data.api.MovieDetailsApi
 import com.example.data.repository.MovieDetailsRepositoryImpl

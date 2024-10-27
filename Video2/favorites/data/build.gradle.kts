@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
@@ -48,6 +48,6 @@ dependencies {
     implementation (libs.kotlinx.coroutines.core)
 
     implementation (libs.dagger)
-    kapt (libs.dagger.compiler)
+    ksp (libs.dagger.compiler)
     implementation (libs.kotlinx.serialization.json)
 }

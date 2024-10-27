@@ -9,6 +9,7 @@ import com.example.presentation.viewmodel.MovieDetailsViewModel
 import com.example.core.di.ViewModelFactory
 import javax.inject.Inject
 import com.example.core.di.findDependencies
+import com.example.presentation.di.DaggerMovieDetailsComponent
 
 class MovieDetailsFragment : Fragment() {
 
@@ -38,6 +39,7 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         DaggerMovieDetailsComponent.factory()
             .create(findDependencies())
             .inject(this)

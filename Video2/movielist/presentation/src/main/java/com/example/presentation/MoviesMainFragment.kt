@@ -8,6 +8,7 @@ import com.example.core.di.ViewModelFactory
 import com.example.core.di.findDependencies
 import com.example.presentation.ui.MoviesMainScreen
 import javax.inject.Inject
+import com.example.presentation.di.DaggerMoviesMainComponent
 
 
 class MoviesMainFragment : Fragment() {

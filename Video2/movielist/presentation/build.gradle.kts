@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -41,7 +41,8 @@ dependencies {
     implementation(project(":movielist:domain"))
     implementation(project(":favorites:domain"))
     implementation(project(":core"))
-    implementation(project(":moviedetails:presentation"))
+    implementation(project(":movielist:data"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -50,9 +51,14 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation (libs.coil.compose)
     implementation (libs.dagger)
-    kapt (libs.dagger.compiler)
+    ksp (libs.dagger.compiler)
     implementation (libs.androidx.fragment.ktx)
     implementation(libs.androidx.runtime.android)
+
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.androidx.runtime.livedata)
+    implementation (libs.glide)
+    ksp (libs.compiler)
 }
