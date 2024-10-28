@@ -37,7 +37,6 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(project(":moviedetails:domain"))
     implementation(libs.androidx.runtime.android)
     implementation(project(":favorites:domain"))

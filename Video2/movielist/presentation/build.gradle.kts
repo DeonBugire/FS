@@ -37,7 +37,6 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(project(":movielist:domain"))
     implementation(project(":favorites:domain"))
     implementation(project(":core"))
@@ -59,6 +58,5 @@ dependencies {
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
     implementation (libs.androidx.runtime.livedata)
-    implementation (libs.glide)
-    ksp (libs.compiler)
+    implementation(libs.coil.compose)
 }

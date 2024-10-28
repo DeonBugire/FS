@@ -10,6 +10,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.core.common.MovieTabs
 import com.example.presentation.MovieViewModel
 
 @Composable
@@ -18,8 +19,8 @@ fun MoviesMainScreen(viewModel: MovieViewModel) {
 
     Column(modifier = Modifier.fillMaxSize()) {
         when (selectedTab) {
-            com.example.core.common.MovieTabs.MoviesList -> MovieListScreen(viewModel, Modifier.weight(1f))
-            com.example.core.common.MovieTabs.Favorites -> FavoritesScreen(viewModel, Modifier.weight(1f))
+            MovieTabs.MoviesList -> MovieListScreen(viewModel, Modifier.weight(1f))
+            MovieTabs.Favorites -> FavoritesScreen(viewModel, Modifier.weight(1f))
         }
 
         MoviesTabScreen(
