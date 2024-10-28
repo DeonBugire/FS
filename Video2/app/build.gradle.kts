@@ -45,9 +45,17 @@ dependencies {
 
     implementation(project(":core"))
     implementation(project(":moviedetails:presentation"))
+    implementation(project(":moviedetails:data"))
+    implementation(project(":moviedetails:domain"))
+
     implementation(project(":movielist:presentation"))
+    implementation(project(":movielist:data"))
+    implementation(project(":movielist:domain"))
 
     implementation (libs.dagger)
+    implementation(project(":favorites:di"))
+    implementation(project(":favorites:domain"))
+    implementation(project(":favorites:data"))
     kapt (libs.dagger.compiler)
 
     implementation(libs.lifecycle.viewmodel.ktx)
@@ -58,4 +66,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+
+    implementation (libs.androidx.datastore.preferences)
+    implementation (libs.androidx.datastore)
 }
