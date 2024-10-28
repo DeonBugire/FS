@@ -1,4 +1,4 @@
-package com.example.video2.navigation
+package com.example.core.navigation
 
 import androidx.fragment.app.FragmentActivity
 

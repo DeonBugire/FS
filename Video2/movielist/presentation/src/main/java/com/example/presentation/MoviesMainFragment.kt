@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.core.di.ViewModelFactory
 import com.example.core.di.findDependencies
+import com.example.core.navigation.Navigator
 import com.example.presentation.ui.MoviesMainScreen
 import javax.inject.Inject
 import com.example.presentation.di.DaggerMoviesMainComponent
@@ -16,6 +17,9 @@ class MoviesMainFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: MovieViewModel by viewModels { viewModelFactory }
+
+    @Inject
+    lateinit var navigator: Navigator
 
     override fun onCreateView(
         inflater: android.view.LayoutInflater,
@@ -34,5 +38,17 @@ class MoviesMainFragment : Fragment() {
         DaggerMoviesMainComponent.factory()
             .create(findDependencies())
             .inject(this)
+
+        viewModel.navigateToMovieDetails.observe(this) { imdbID ->
+            imdbID?.let {
+                navigator.navigateToMovieDetails(requireActivity(), it)
+                viewModel.onMovieDetailsNavigated()
+            }
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshMovies()
+        viewModel.refreshFavorites()
     }
 }

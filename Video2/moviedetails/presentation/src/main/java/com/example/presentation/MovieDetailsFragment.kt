@@ -25,6 +25,7 @@ class MovieDetailsFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val imdbID = requireArguments().getString("imdbID") ?: ""
+                viewModel.getMovieDetails(imdbID)
                 MovieDetailsScreen(
                     viewModel = viewModel,
                     imdbID = imdbID,

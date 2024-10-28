@@ -1,6 +1,7 @@
 package com.example.video2.navigation
 
 import androidx.fragment.app.FragmentActivity
+import com.example.core.navigation.Navigator
 import com.example.presentation.MovieDetailsFragment
 import com.example.presentation.MoviesMainFragment
 

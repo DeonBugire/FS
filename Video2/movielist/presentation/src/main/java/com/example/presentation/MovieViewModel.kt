@@ -35,6 +35,7 @@ class MovieViewModel @Inject constructor(
     private var movies: List<MoviePresentation> = emptyList()
     init {
         refreshFavorites()
+        refreshMovies()
     }
 
     fun searchMovies(title: String) {
@@ -94,6 +95,7 @@ class MovieViewModel @Inject constructor(
             favoriteMoviesLiveData.postValue(favoritePresentationList)
         }
     }
+
     fun onMovieClick(imdbID: String) {
         _navigateToMovieDetails.postValue(imdbID)
     }

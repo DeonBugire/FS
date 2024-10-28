@@ -2,7 +2,7 @@ package com.example.video2
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.video2.navigation.Navigator
+import com.example.core.navigation.Navigator
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
