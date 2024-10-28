@@ -1,7 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
 android {
@@ -12,7 +14,6 @@ android {
         minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -34,22 +35,18 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.material3.android)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.runtime.livedata)
-    implementation (libs.dagger)
-    ksp (libs.dagger.compiler)
+    implementation(platform(libs.androidx.compose.bom))
+
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
+
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
-    implementation (libs.androidx.fragment.ktx)
     implementation (libs.logging.interceptor)
-    implementation (libs.material3)
+
+    implementation (libs.androidx.fragment.ktx)
 }

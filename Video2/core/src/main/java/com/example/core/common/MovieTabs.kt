@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 
+
 enum class MovieTabs(val title: String) {
     MoviesList("Movies"),
     Favorites("Favorites")

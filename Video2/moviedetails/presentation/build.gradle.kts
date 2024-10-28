@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
 }
 
 android {
@@ -12,7 +13,6 @@ android {
         minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -38,7 +38,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(project(":moviedetails:domain"))
-    implementation(libs.androidx.runtime.android)
     implementation(project(":favorites:domain"))
     implementation(project(":core"))
     implementation(project(":moviedetails:data"))
@@ -48,14 +47,18 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.coil.compose)
+
+
     implementation (libs.dagger)
-    ksp (libs.dagger.compiler)
+    kapt(libs.dagger.compiler)
     implementation (libs.androidx.fragment.ktx)
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
+
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+
+    implementation(libs.androidx.material3)
+
+    implementation (libs.coil.compose)
 }
