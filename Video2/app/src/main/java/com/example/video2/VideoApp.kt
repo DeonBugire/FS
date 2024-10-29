@@ -6,8 +6,8 @@ import com.example.video2.di.DaggerAppComponent
 import com.example.core.di.DependenciesProvider
 import com.example.core.di.Dependencies
 
-class VideoApp : Application(), DependenciesProvider {
-    val appComponent: AppComponent by lazy {
+internal class VideoApp : Application(), DependenciesProvider {
+   val appComponent: AppComponent by lazy {
         DaggerAppComponent.factory().create(applicationContext)
     }
 

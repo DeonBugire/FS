@@ -14,7 +14,7 @@ import com.example.core.common.MovieTabs
 import com.example.presentation.MovieViewModel
 
 @Composable
-fun MoviesMainScreen(viewModel: MovieViewModel) {
+internal fun MoviesMainScreen(viewModel: MovieViewModel) {
     var selectedTab by rememberSaveable { mutableStateOf(com.example.core.common.MovieTabs.MoviesList) }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -32,7 +32,7 @@ fun MoviesMainScreen(viewModel: MovieViewModel) {
 }
 
 @Composable
-fun MovieListScreen(viewModel: MovieViewModel, modifier: Modifier = Modifier) {
+internal fun MovieListScreen(viewModel: MovieViewModel, modifier: Modifier = Modifier) {
     val movieList by viewModel.movieListLiveData.observeAsState(emptyList())
 
     LazyColumn(
@@ -51,7 +51,7 @@ fun MovieListScreen(viewModel: MovieViewModel, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MoviesTabScreen(
+internal fun MoviesTabScreen(
     selectedTab: com.example.core.common.MovieTabs,
     onTabSelected: (com.example.core.common.MovieTabs) -> Unit,
     modifier: Modifier = Modifier

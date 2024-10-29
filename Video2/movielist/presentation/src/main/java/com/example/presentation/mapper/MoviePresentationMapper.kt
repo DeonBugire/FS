@@ -4,7 +4,7 @@ import com.example.domain.model.Favorite
 import com.example.domain.model.Movie
 import com.example.presentation.model.MoviePresentation
 
-object MoviePresentationMapper {
+internal object MoviePresentationMapper {
     private fun mapToPresentation(movie: Movie, isFavorite: Boolean): MoviePresentation {
         return MoviePresentation(
             title = movie.title,
@@ -15,7 +15,7 @@ object MoviePresentationMapper {
     }
 
     fun mapToPresentationList(
-        movieList: List<com.example.domain.model.Movie>,
+        movieList: List<Movie>,
         favorites: List<Favorite>
     ): List<MoviePresentation> {
         return movieList.map { movie ->

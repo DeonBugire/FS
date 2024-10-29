@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.example.presentation.MovieViewModel
 
 @Composable
-fun FavoritesScreen(viewModel: MovieViewModel, modifier: Modifier = Modifier) {
+internal fun FavoritesScreen(viewModel: MovieViewModel, modifier: Modifier = Modifier) {
     val favoriteMoviesState = viewModel.favoriteMoviesLiveData.observeAsState(emptyList())
 
     val favoriteMovies = favoriteMoviesState.value

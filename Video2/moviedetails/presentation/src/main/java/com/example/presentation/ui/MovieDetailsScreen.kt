@@ -14,7 +14,7 @@ import com.example.presentation.model.MovieDetailsPresentation
 import com.example.presentation.viewmodel.MovieDetailsViewModel
 
 @Composable
-fun MovieDetailsScreen(
+internal fun MovieDetailsScreen(
     viewModel: MovieDetailsViewModel,
     imdbID: String,
     onBack: () -> Unit,

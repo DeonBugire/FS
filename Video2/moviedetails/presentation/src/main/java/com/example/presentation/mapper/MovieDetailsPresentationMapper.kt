@@ -3,7 +3,7 @@ package com.example.presentation.mapper
 import com.example.domain.model.MovieDetails
 import com.example.presentation.model.MovieDetailsPresentation
 
-object MovieDetailsPresentationMapper {
+internal object MovieDetailsPresentationMapper {
     fun mapToPresentation(movieDetails: MovieDetails, isFavorite: Boolean): MovieDetailsPresentation {
         return MovieDetailsPresentation(
             imdbID = movieDetails.imdbID,

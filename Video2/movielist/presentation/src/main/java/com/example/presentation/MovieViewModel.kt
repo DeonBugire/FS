@@ -34,11 +34,11 @@ class MovieViewModel @Inject constructor(
 
     private var movies: List<MoviePresentation> = emptyList()
     init {
-        refreshFavorites()
         refreshMovies()
+        refreshFavorites()
     }
 
-    fun searchMovies(title: String) {
+    private fun searchMovies(title: String) {
         viewModelScope.launch {
             try {
                 val movieList = withContext(Dispatchers.IO) {
@@ -84,14 +84,17 @@ class MovieViewModel @Inject constructor(
 
     fun refreshFavorites() {
         viewModelScope.launch {
+            if (movies.isEmpty()) {
+                val loadedMovies = searchMoviesUseCase.execute("Guardians")
+                val favorites = consumeFavoritesUseCase.execute().first()
+                movies = MoviePresentationMapper.mapToPresentationList(loadedMovies, favorites)
+            }
             val favorites = consumeFavoritesUseCase.execute().first()
-
             val favoritePresentationList = movies.filter { movie ->
                 favorites.any { it.id == movie.imdbID }
             }.map { movie ->
                 movie.copy(isFavorite = true)
             }
-
             favoriteMoviesLiveData.postValue(favoritePresentationList)
         }
     }

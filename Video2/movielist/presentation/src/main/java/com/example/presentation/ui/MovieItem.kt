@@ -17,7 +17,7 @@ import com.example.presentation.model.MoviePresentation
 
 
 @Composable
-fun MovieItem(
+internal fun MovieItem(
     movie: MoviePresentation,
     onMovieClick: (String) -> Unit,
     onFavoriteClick: (MoviePresentation) -> Unit

@@ -5,7 +5,7 @@ import com.example.core.navigation.Navigator
 import com.example.presentation.MovieDetailsFragment
 import com.example.presentation.MoviesMainFragment
 
-class AppNavigator : Navigator {
+internal class AppNavigator : Navigator {
     override fun navigateToMovieDetails(fragment: FragmentActivity, imdbID: String) {
         val movieDetailsFragment = MovieDetailsFragment.newInstance(imdbID)
         fragment.supportFragmentManager.beginTransaction()

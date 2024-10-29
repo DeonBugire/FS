@@ -3,7 +3,7 @@ package com.example.data.mapper
 import com.example.data.model.FavoriteEntity
 import com.example.domain.model.Favorite
 
-class FavoriteDataMapper {
+ class FavoriteDataMapper {
     fun mapToDomain(entity: FavoriteEntity): Favorite {
         return Favorite(id = entity.id)
     }
