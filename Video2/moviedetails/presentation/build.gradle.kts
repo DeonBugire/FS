@@ -61,4 +61,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation (libs.coil.compose)
+
+    testImplementation (libs.mockk)
+    testImplementation (libs.kotlinx.coroutines.test)
 }

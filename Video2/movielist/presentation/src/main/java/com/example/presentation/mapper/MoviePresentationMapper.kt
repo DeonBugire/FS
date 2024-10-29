@@ -5,7 +5,7 @@ import com.example.domain.model.Movie
 import com.example.presentation.model.MoviePresentation
 
 internal object MoviePresentationMapper {
-    private fun mapToPresentation(movie: Movie, isFavorite: Boolean): MoviePresentation {
+    internal fun mapToPresentation(movie: Movie, isFavorite: Boolean): MoviePresentation {
         return MoviePresentation(
             title = movie.title,
             poster = movie.poster,

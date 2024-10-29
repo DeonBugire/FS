@@ -15,6 +15,7 @@ import com.example.domain.model.Favorite
 import com.example.domain.usecase.AddToFavoritesUseCase
 import com.example.domain.usecase.ConsumeFavoritesUseCase
 import com.example.domain.usecase.RemoveFromFavoritesUseCase
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
@@ -38,21 +39,18 @@ class MovieViewModel @Inject constructor(
         refreshFavorites()
     }
 
-    private fun searchMovies(title: String) {
-        viewModelScope.launch {
+    internal fun searchMovies(title: String, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             try {
-                val movieList = withContext(Dispatchers.IO) {
+                val movieList = withContext(dispatcher) {
                     searchMoviesUseCase.execute(title)
                 }
-
-                val favorites = withContext(Dispatchers.IO) {
+                val favorites = withContext(dispatcher) {
                     consumeFavoritesUseCase.execute().first()
                 }
-
                 movies = MoviePresentationMapper.mapToPresentationList(movieList, favorites)
                 movieListLiveData.postValue(movies)
             } catch (e: Exception) {
-                Log.e("MovieViewModel", "Error fetching movies: ${e.message}")
                 errorLiveData.postValue(e.message)
             }
         }

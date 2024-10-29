@@ -47,4 +47,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.material3)
+
+    testImplementation (libs.mockito.core)
+    testImplementation (libs.mockito.kotlin)
 }
