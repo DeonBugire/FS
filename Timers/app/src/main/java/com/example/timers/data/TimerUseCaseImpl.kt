@@ -6,10 +6,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.takeWhile
+import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
 import kotlin.time.Duration.Companion.seconds
 
-class TimerUseCaseImpl : TimerUseCase {
+class TimerUseCaseImpl @Inject constructor(): TimerUseCase {
     private var timerJob: Job? = null
 
     override fun startTimer(timeInSeconds: Long): Flow<String> {
