@@ -6,96 +6,84 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.os.PowerManager
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+
 
 class MainActivity : ComponentActivity(), SensorEventListener {
 
     private lateinit var sensorManager: SensorManager
     private var proximitySensor: Sensor? = null
     private var isScreenOn by mutableStateOf(true)
-    private lateinit var powerManager: PowerManager
-    private var wakeLock: PowerManager.WakeLock? = null
+    private var isCallModeEnabled by mutableStateOf(false)
+    private lateinit var screenLocker: ScreenLocker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        screenLocker = ScreenLocker(this)
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
 
         setContent {
-            ProximitySensorScreen(isScreenOn)
+            ProximitySensorScreen(
+                isScreenOn = isScreenOn,
+                isCallModeEnabled = isCallModeEnabled,
+                onCallModeToggle = { toggleCallMode() }
+            )
         }
     }
 
     override fun onResume() {
         super.onResume()
-        proximitySensor?.also { sensor ->
-            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+        if (isCallModeEnabled) {
+            proximitySensor?.also { sensor ->
+                sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+                Log.d("MainActivity", "Слушатель датчика зарегистрирован")
+            }
         }
     }
 
     override fun onPause() {
         super.onPause()
         sensorManager.unregisterListener(this)
-        wakeLock?.release()
+        screenLocker.release()
+        Log.d("MainActivity", "Слушатель датчика и WakeLock освобождены")
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (event?.sensor?.type == Sensor.TYPE_PROXIMITY) {
+        if (isCallModeEnabled && event?.sensor?.type == Sensor.TYPE_PROXIMITY) {
             isScreenOn = event.values[0] >= (proximitySensor?.maximumRange ?: 0f)
-            controlScreen(isScreenOn)
+            if (isScreenOn) {
+                Log.d("MainActivity", "Состояние: экран включен")
+                screenLocker.unlockScreen()
+            } else {
+                Log.d("MainActivity", "Состояние: экран выключен")
+                screenLocker.lockScreen()
+            }
         }
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        screenLocker.release()
+    }
 
-    private fun controlScreen(turnOn: Boolean) {
-        if (turnOn) {
-            // Включаем экран и освобождаем wake lock, если он удерживается
-            if (wakeLock?.isHeld == true) {
-                wakeLock?.release()
+    private fun toggleCallMode() {
+        isCallModeEnabled = !isCallModeEnabled
+        Log.d("MainActivity", "Call mode toggled: $isCallModeEnabled")
+        if (isCallModeEnabled) {
+            proximitySensor?.also { sensor ->
+                sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+                Log.d("MainActivity", "Слушатель сенсора зарегистрирован")
             }
         } else {
-            // Выключаем экран и удерживаем wake lock только если он еще не удерживается
-            if (wakeLock == null) {
-                wakeLock = powerManager.newWakeLock(
-                    PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
-                    "ProximitySensor:WakeLock"
-                )
-            }
-            if (wakeLock?.isHeld == false) {
-                wakeLock?.acquire()
-            }
+            sensorManager.unregisterListener(this)
+            screenLocker.unlockScreen()
+            Log.d("MainActivity", "Слушатель сенсора отключен и WakeLock освобожден")
         }
     }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-    }
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 }
-
-@Composable
-fun ProximitySensorScreen(isScreenOn: Boolean) {
-    val screenStatusText = if (isScreenOn) "Экран включен" else "Экран выключен (рядом с ухом)"
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = screenStatusText, style = MaterialTheme.typography.headlineMedium)
-        }
-    }
-}
-
